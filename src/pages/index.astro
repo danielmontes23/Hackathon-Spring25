@@ -6,7 +6,7 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
 
 <Layout>
   <main style="max-width: 700px; margin: 2rem auto;">
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+    <div class="sticky-element" style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
       <label style="font-weight: 500; margin-right: 0.5rem;">Theme:</label>
       <select id="theme-select">
         <option value="default">Default</option>
@@ -47,11 +47,11 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
       </section>
 
       <DynamicResumeSections client:load />
-
       <button type="submit">Generate Resume</button>
     </form>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        // Phone input: numbers only
         const phoneInput = document.getElementById('phone');
         if (phoneInput) {
           phoneInput.addEventListener('input', () => {
@@ -59,28 +59,17 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
           });
         }
 
+        // Persist first_name, last_name, email, phone
         ['first_name', 'last_name', 'email', 'phone'].forEach(field => {
           const input = document.getElementById(field);
           if (input) {
-            // Load from localStorage
             const saved = localStorage.getItem(field);
             if (saved) input.value = saved;
-            // Save on change
             input.addEventListener('input', () => {
               localStorage.setItem(field, input.value);
             });
           }
         });
-
-        // Persist DOB
-        const dobInput = document.getElementById('dob');
-        if (dobInput) {
-          const saved = localStorage.getItem('dob');
-          if (saved) dobInput.value = saved;
-          dobInput.addEventListener('input', () => {
-            localStorage.setItem('dob', dobInput.value);
-          });
-        }
 
         // Social Media Links logic
         const socialLinksList = document.getElementById('social-links-list');
@@ -276,7 +265,6 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         // Form validation for at least one email and phone with label
         const form = document.getElementById('resume-form');
         form.addEventListener('submit', (e) => {
-          // Check emails
           const emails = JSON.parse(localStorage.getItem('emails') || '[]');
           const validEmails = emails.filter(item => item.email && item.label);
           if (validEmails.length < 1) {
@@ -284,7 +272,6 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
             e.preventDefault();
             return;
           }
-          // Check phones
           const phones = JSON.parse(localStorage.getItem('phones') || '[]');
           const validPhones = phones.filter(item => item.phone && item.label);
           if (validPhones.length < 1) {
