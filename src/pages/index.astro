@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { useState } from 'react';
+import '../styles/Global.css';
 ---
 
 <Layout>
@@ -25,41 +25,38 @@ import { useState } from 'react';
 
       <section>
         <h2>Education</h2>
-        <div>
-          <label>
-            College/University:
-            <input type="text" name="education_school" />
-          </label>
-          <label>
-            Degree:
-            <input type="text" name="education_degree" />
-          </label>
-          <label>
-            Start Year:
-            <input type="text" name="education_year" />
-          </label>
-		  Graduation Year:
-            <input type="text" name="education_year" />
-          </label>
-        </div>
+        <label>
+          College/University:
+          <input type="text" name="education_school" />
+        </label>
+        <label>
+          Degree:
+          <input type="text" name="education_degree" />
+        </label>
+        <label>
+          Start Year:
+          <input type="text" name="education_start_year" />
+        </label>
+        <label>
+          Graduation Year:
+          <input type="text" name="education_grad_year" />
+        </label>
       </section>
 
       <section>
         <h2>Experience</h2>
-        <div>
-          <label>
-            Company:
-            <input type="text" name="experience_company" />
-          </label>
-          <label>
-            Role:
-            <input type="text" name="experience_role" />
-          </label>
-          <label>
-            Years:
-            <input type="text" name="experience_years" />
-          </label>
-        </div>
+        <label>
+          Company:
+          <input type="text" name="experience_company" />
+        </label>
+        <label>
+          Role:
+          <input type="text" name="experience_role" />
+        </label>
+        <label>
+          Years:
+          <input type="text" name="experience_years" />
+        </label>
       </section>
 
       <section>
