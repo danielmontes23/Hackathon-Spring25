@@ -6,6 +6,15 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
 
 <Layout>
   <main style="max-width: 700px; margin: 2rem auto;">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+      <label style="font-weight: 500; margin-right: 0.5rem;">Theme:</label>
+      <select id="theme-select">
+        <option value="default">Default</option>
+        <option value="dark">Dark</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+      </select>
+    </div>
     <h1>Resume Builder</h1>
     <form id="resume-form">
       <section>
@@ -283,6 +292,21 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
             e.preventDefault();
             return;
           }
+        });
+
+        // Theme switcher
+        const themeSelect = document.getElementById('theme-select');
+        const savedTheme = localStorage.getItem('theme') || 'default';
+        document.body.classList.remove('theme-dark', 'theme-blue', 'theme-green');
+        if (savedTheme !== 'default') document.body.classList.add('theme-' + savedTheme);
+        themeSelect.value = savedTheme;
+
+        themeSelect.addEventListener('change', (e) => {
+          document.body.classList.remove('theme-dark', 'theme-blue', 'theme-green');
+          if (e.target.value !== 'default') {
+            document.body.classList.add('theme-' + e.target.value);
+          }
+          localStorage.setItem('theme', e.target.value);
         });
       });
     </script>
