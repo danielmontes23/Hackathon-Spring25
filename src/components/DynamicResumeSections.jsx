@@ -16,6 +16,9 @@ export default function DynamicResumeSections() {
     { company: "", role: "", start: "", end: "" }
   ]));
   const [skills, setSkills] = useState(() => getInitial("skills", [""]));
+  const [customSections, setCustomSections] = useState(() => getInitial("customSections", [
+    { label: "", content: "" }
+  ]));
 
   // Save to localStorage on change
   useEffect(() => {
@@ -27,6 +30,9 @@ export default function DynamicResumeSections() {
   useEffect(() => {
     localStorage.setItem("skills", JSON.stringify(skills));
   }, [skills]);
+  useEffect(() => {
+    localStorage.setItem("customSections", JSON.stringify(customSections));
+  }, [customSections]);
 
   // Education handlers
   const addEducation = () =>
@@ -58,6 +64,17 @@ export default function DynamicResumeSections() {
     const updated = [...skills];
     updated[idx] = value;
     setSkills(updated);
+  };
+
+  // Custom sections handlers
+  const addCustomSection = () =>
+    setCustomSections([...customSections, { label: "", content: "" }]);
+  const removeCustomSection = idx =>
+    customSections.length > 1 && setCustomSections(customSections.filter((_, i) => i !== idx));
+  const handleCustomSection = (idx, field, value) => {
+    const updated = [...customSections];
+    updated[idx][field] = value;
+    setCustomSections(updated);
   };
 
   return (
@@ -132,6 +149,26 @@ export default function DynamicResumeSections() {
           </div>
         ))}
         <button type="button" onClick={addSkill}>Add Skill</button>
+      </section>
+
+      <section>
+        <h2>Custom Sections</h2>
+        {customSections.map((section, idx) => (
+          <div key={idx} style={{border: "1px solid #eee", padding: "1rem", marginBottom: "1rem", borderRadius: "6px"}}>
+            <label>
+              Section Label:
+              <input type="text" name={`custom_section_label_${idx}`} value={section.label}
+                onChange={e => handleCustomSection(idx, "label", e.target.value)} required />
+            </label>
+            <label>
+              Content:
+              <textarea name={`custom_section_content_${idx}`} value={section.content}
+                onChange={e => handleCustomSection(idx, "content", e.target.value)} required />
+            </label>
+            <button type="button" onClick={() => removeCustomSection(idx)} disabled={customSections.length === 1}>Delete</button>
+          </div>
+        ))}
+        <button type="button" onClick={addCustomSection}>Add Custom Section</button>
       </section>
     </>
   );
