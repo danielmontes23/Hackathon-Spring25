@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import '../styles/Global.css';
+import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
 ---
 
 <Layout>
@@ -11,11 +12,11 @@ import '../styles/Global.css';
         <h2>Personal Info</h2>
         <label>
           First Name:
-          <input type="text" name="name" required />
+          <input type="text" name="first_name" required />
         </label>
-		<label>
+        <label>
           Last Name:
-          <input type="text" name="name" required />
+          <input type="text" name="last_name" required />
         </label>
         <label>
           Email:
@@ -27,53 +28,8 @@ import '../styles/Global.css';
         </label>
       </section>
 
-      <section>
-        <h2>Education</h2>
-        <label>
-          College/University:
-          <input type="text" name="education_school" />
-        </label>
-        <label>
-          Degree:
-          <input type="text" name="education_degree" />
-        </label>
-        <label>
-          Start Year:
-          <input type="text" name="education_start_year" />
-        </label>
-        <label>
-          Graduation Year:
-          <input type="text" name="education_grad_year" />
-        </label>
-      </section>
-
-      <section>
-        <h2>Experience</h2>
-        <label>
-          Company:
-          <input type="text" name="experience_company" />
-        </label>
-        <label>
-          Role:
-          <input type="text" name="experience_role" />
-        </label>
-        <label>
-          Start Date:
-          <input type="text" name="experience_years" />
-        </label>
-		<label>
-          End Date:
-          <input type="text" name="experience_years" />
-        </label>
-      </section>
-
-      <section>
-        <h2>Skills</h2>
-        <label>
-          List your skills (comma separated):
-          <input type="text" name="skills" />
-        </label>
-      </section>
+      <!-- Only this part is React! -->
+      <DynamicResumeSections client:load />
 
       <section>
         <h2>Custom Section</h2>
