@@ -51,7 +51,7 @@ def add_section(args):
 
 @app.route('/generate', methods=['GET'])
 def generate():
-    valid = texfile.generate("test_name")
+    valid = texfile.generate(file_name)
     if not valid:
         valid = {'isvalid': False}
     return jsonify(valid)
