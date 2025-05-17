@@ -15,9 +15,7 @@ export default function DynamicResumeSections() {
   const [noCollege, setNoCollege] = useState(() => getInitial("noCollege", false));
 
   // Dynamic additional schools
-  const [education, setEducation] = useState(() => getInitial("education", [
-    { school: "", degree: "", grad: "" }
-  ]));
+  const [education, setEducation] = useState(() => getInitial("education", []));
 
   // Experience and Skills (unchanged)
   const [experience, setExperience] = useState(() => getInitial("experience", [
@@ -175,42 +173,46 @@ export default function DynamicResumeSections() {
           </label>
         </div>
         {/* Other Schools */}
-        <h3>Other Schools</h3>
-        {education.map((edu, idx) => (
-          <div key={idx} style={{border: "1px solid #eee", padding: "1rem", marginBottom: "1rem", borderRadius: "6px"}}>
-            <label>
-              School Name:
-              <input
-                type="text"
-                name={`education_school_${idx}`}
-                value={edu.school}
-                onChange={e => handleEducation(idx, "school", e.target.value)}
-                required
-              />
-            </label>
-            <label>
-              Degree:
-              <input
-                type="text"
-                name={`education_degree_${idx}`}
-                value={edu.degree}
-                onChange={e => handleEducation(idx, "degree", e.target.value)}
-                required
-              />
-            </label>
-            <label>
-              Graduation Year:
-              <input
-                type="text"
-                name={`education_grad_${idx}`}
-                value={edu.grad}
-                onChange={e => handleEducation(idx, "grad", e.target.value)}
-                required
-              />
-            </label>
-            <button type="button" onClick={() => removeEducation(idx)} disabled={education.length === 1}>Delete</button>
-          </div>
-        ))}
+        {education.length > 0 && (
+          <>
+            <h3>Other Schools</h3>
+            {education.map((edu, idx) => (
+              <div key={idx} style={{border: "1px solid #eee", padding: "1rem", marginBottom: "1rem", borderRadius: "6px"}}>
+                <label>
+                  School Name:
+                  <input
+                    type="text"
+                    name={`education_school_${idx}`}
+                    value={edu.school}
+                    onChange={e => handleEducation(idx, "school", e.target.value)}
+                    required
+                  />
+                </label>
+                <label>
+                  Degree:
+                  <input
+                    type="text"
+                    name={`education_degree_${idx}`}
+                    value={edu.degree}
+                    onChange={e => handleEducation(idx, "degree", e.target.value)}
+                    required
+                  />
+                </label>
+                <label>
+                  Graduation Year:
+                  <input
+                    type="text"
+                    name={`education_grad_${idx}`}
+                    value={edu.grad}
+                    onChange={e => handleEducation(idx, "grad", e.target.value)}
+                    required
+                  />
+                </label>
+                <button type="button" onClick={() => removeEducation(idx)} disabled={education.length === 1}>Delete</button>
+              </div>
+            ))}
+          </>
+        )}
         <button type="button" onClick={addEducation}>Add Another School</button>
       </section>
 
