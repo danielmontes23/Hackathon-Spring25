@@ -39,10 +39,22 @@ def set_personals(socials):
     valid = texfile.personal_info(sd['fname'],sd['lname'],sd['title'],sd['faddress'],sd['laddress'],email,phone,social,homepage)
     return jsonify(valid), 200
 
+@app.route('/section_add/<args>', methods=['GET'])
+def add_section(args):
+    argsd = ast.literal_eval(base64.b64decode(args).decode("utf-8"))
+    valid = {'isvalid': False}
+    if len(argsd.keys()) == 2:
+        valid = texfile.add_section_2(argsd['section'], argsd['section_data'])
+    elif len(argsd.keys()) == 6:
+        valid = texfile.add_section_6(argsd['section'],argsd['dates'],argsd['title'],argsd['company'],argsd['city'],argsd['country'], argsd['data'])
+    return valid   
+
 @app.route('/generate', methods=['GET'])
 def generate():
-    texfile.generate("test_name")
-    return jsonify({'isvalid': True})
+    valid = texfile.generate("test_name")
+    if not valid:
+        valid = {'isvalid': False}
+    return jsonify(valid)
 
 @app.route('/download', methods=['GET'])
 def download_file():

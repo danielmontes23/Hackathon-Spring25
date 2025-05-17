@@ -59,19 +59,25 @@ class document_creation():
         if isinstance(section, str) and isinstance(section_data, str):
             with self.doc.create(Section(section)):
                 self.doc.append(Command('cvitem', arguments=['', NoEscape(section_data)]))
+                return {'isvalid': True}
+        return {'isvalid': False}
+            
 
     def add_section_6(self, section: str, dates: str, title: str, company: str, city: str, country: str, data: str):
         with self.doc.create(Section(section)):
             self.doc.append(Command('cventry', arguments=[
                 dates, title, company, city, country, NoEscape(data)
             ]))
-
+            return {'isvalid': True}
+        return {'isvalid': False}
+    
     def generate(self, name: str):
         # Ensure output directory exists
         os.makedirs('output', exist_ok=True)
         try:
-            # Generate PDF using latexmk
+            # Generate PDF using pdflatex
             self.doc.generate_pdf(f'output/{name}', clean_tex=False, compiler='pdflatex')
+            return {'isvalid': True}
         except subprocess.CalledProcessError as e:
             print(f"LaTeX compilation failed with exit code {e.returncode}")
             print(f"Output: {e.output.decode()}")
@@ -81,6 +87,7 @@ class document_creation():
                     print("Log file contents:")
                     print(log_file.read())
             raise
+        
 
 # # Experience
 # self.doc.append(Section('Experience'))
