@@ -39,7 +39,7 @@ def set_personals(socials):
     valid = texfile.personal_info(sd['fname'],sd['lname'],sd['title'],sd['faddress'],sd['laddress'],email,phone,social,homepage)
     return jsonify(valid), 200
 
-@app.route('/section_add/<args>', methods=['GET'])
+@app.route('/section_add2/<args>', methods=['GET'])
 def add_section(args):
     argsd = ast.literal_eval(base64.b64decode(args).decode("utf-8"))
     valid = {'isvalid': False}
@@ -48,8 +48,11 @@ def add_section(args):
             valid = texfile.add_summary(argsd['section'], argsd['section_data'])
         else:
             valid = texfile.add_section_2(argsd['section'], argsd['section_data'])
-    elif len(argsd.keys()) == 6:
-        valid = texfile.add_section_6(argsd['section'],argsd['dates'],argsd['title'],argsd['company'],argsd['city'],argsd['country'], argsd['data'])
+
+@app.route('/section_add6/<args>', methods=['GET'])
+def add_section6(args):
+    argsd = ast.literal_eval(base64.b64decode(args).decode("utf-8"))
+    valid = texfile.add_section_6(argsd['section'], argsd['section_data'])
     return valid   
 
 @app.route('/generate', methods=['GET'])

@@ -128,15 +128,33 @@ class document_creation():
         return {'isvalid': False}
             
 
-    def add_section_6(self, section: str, dates: str, title: str, company: str, city: str, country: str, data: str):
+    def add_section_6(self, section: str, data: dict):
+        '''
+        Adds a section with six key-value pairs to the document.
+        
+        :param section: The name of the section.
+        
+        :param data: A dictionary containing six key-value pairs. The keys are 'dates', 'title', 'company', 'city', 'country', and 'data'.
+
+        :return: A dictionary indicating whether the section was added successfully.'''
         with self.doc.create(Section(section)):
-            self.doc.append(Command('cventry', arguments=[
-                dates, title, company, city, country, NoEscape(data)
-            ]))
+            for entry in data.values():
+                self.doc.append(Command('cventry', arguments=[
+                    entry['dates'],
+                    NoEscape(entry['title']),
+                    NoEscape(entry['company']),
+                    NoEscape(entry['city']),
+                    NoEscape(entry['country']),
+                    NoEscape(entry['data'])
+                ]))
             return {'isvalid': True}
         return {'isvalid': False}
-    
+        
     def generate(self, name: str):
+        '''
+        Generates the PDF document and saves it to the specified name.
+        
+        :param name: The name of the output file (without extension).'''
         # Ensure output directory exists
         os.makedirs('output', exist_ok=True)
         try:
