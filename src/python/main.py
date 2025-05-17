@@ -44,7 +44,10 @@ def add_section(args):
     argsd = ast.literal_eval(base64.b64decode(args).decode("utf-8"))
     valid = {'isvalid': False}
     if len(argsd.keys()) == 2:
-        valid = texfile.add_section_2(argsd['section'], argsd['section_data'])
+        if "Summary" in argsd.keys():
+            valid = texfile.add_summary(argsd['section'], argsd['section_data'])
+        else:
+            valid = texfile.add_section_2(argsd['section'], argsd['section_data'])
     elif len(argsd.keys()) == 6:
         valid = texfile.add_section_6(argsd['section'],argsd['dates'],argsd['title'],argsd['company'],argsd['city'],argsd['country'], argsd['data'])
     return valid   

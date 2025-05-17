@@ -5,6 +5,8 @@ import subprocess
 
 class document_creation():
     def __init__(self):
+        '''
+        Initializes the document with the moderncv class and some default packages.'''
         self.doc = Document(
             documentclass='moderncv',
             document_options=['11pt', 'a4paper', 'sans']
@@ -14,6 +16,13 @@ class document_creation():
         self.doc.packages.append(Package('geometry', options=['scale=0.85']))
 
     def set_style(self, style: str) -> dict:
+        '''
+        Sets the style for the document.
+        
+        :param style: The style to set. Valid options are 'casual', 'classic', 'oldstyle', 'banking', 'fancy'.
+
+        :return: A dictionary indicating whether the style was set successfully.'''
+        # Define valid style options
         valid_styles = ['casual', 'classic', 'oldstyle', 'banking', 'fancy']
         if style in valid_styles:
             self.doc.preamble.append(Command('moderncvstyle', style))
@@ -21,6 +30,13 @@ class document_creation():
         return {'isvalid': False}
     
     def set_color(self, color: str) -> dict:
+        '''
+        Sets the color theme for the document.
+        
+        :param color: The color theme to set. Valid options are 'blue', 'orange', 'green', 'red', 'purple', 'grey', 'black'.
+
+        :return: A dictionary indicating whether the color was set successfully.'''
+        # Define valid color options
         valid_colors = ['blue', 'orange', 'green', 'red', 'purple', 'grey', 'black']
         if color in valid_colors:
             self.doc.preamble.append(Command('moderncvcolor', color))
@@ -30,6 +46,28 @@ class document_creation():
     def personal_info(self, fname: str, lname: str, title: str, faddress: str, laddress: str,
                      email: dict | None = None, phone: dict | None = None,
                      social: dict | None = None, homepage: str | None = None) -> dict:
+        '''
+        Adds personal information to the document.
+        
+        :param fname: First name.
+        
+        :param lname: Last name.
+        
+        :param title: Title or position.
+        
+        :param faddress: First line of address.
+        
+        :param laddress: Second line of address.
+        
+        :param email: Dictionary of email addresses with keys as labels.
+        
+        :param phone: Dictionary of phone numbers with keys as labels.
+        
+        :param social: Dictionary of social media links with keys as labels.
+        
+        :param homepage: Personal homepage URL.
+        
+        :return: A dictionary indicating whether the information was added successfully.'''
         counter = 3
 
         self.doc.preamble.append(Command('name', [fname, lname]))
@@ -54,11 +92,38 @@ class document_creation():
         self.doc.append(Command('makecvtitle'))
         return {'added': counter}
 
+    
+    def add_summary(self, section:str, section_data: str):
+        '''
+        Adds a summary section to the document.
+        
+        :param section: The name of the section.
+        
+        :param section_data: The content of the section.
 
-    def add_section_2(self, section: str, section_data: str):
-        if isinstance(section, str) and isinstance(section_data, str):
+        :return: A dictionary indicating whether the section was added successfully.'''
+        if isinstance(section, str) and isinstance(section_data, dict):
             with self.doc.create(Section(section)):
-                self.doc.append(Command('cvitem', arguments=['', NoEscape(section_data)]))
+                    self.doc.append(Command('cvitem', arguments=['', NoEscape(section_data)]))
+                    return {'isvalid': True}
+        return {'isvalid': False}
+    
+
+    def add_section_2(self, section: str, section_data: dict):
+        '''
+        Adds a section with key-value pairs to the document.
+
+        :param section: The name of the section.
+        
+        :param section_data: A dictionary containing key-value pairs. key is the dates, and value is the data.
+
+        
+        :return: A dictionary indicating whether the section was added successfully.'''
+        
+        if isinstance(section, str) and isinstance(section_data, dict):
+            with self.doc.create(Section(section)):
+                for key in section_data.keys():
+                    self.doc.append(Command('cvitem', arguments=[key, NoEscape(section_data[key])]))
                 return {'isvalid': True}
         return {'isvalid': False}
             
