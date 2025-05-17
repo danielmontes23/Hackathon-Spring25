@@ -183,7 +183,7 @@ body.theme-dark textarea:focus {
 /* Scroll snapping */
 .scroll-container {
   scroll-snap-type: y proximity;
-  max-height: 400px; /* or whatever fits your design */
+  max-height: 400px;
   overflow-y: auto;
 }
 
