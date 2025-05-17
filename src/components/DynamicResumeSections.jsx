@@ -1,14 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+const getInitial = (key, fallback) => {
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem(key);
+    if (saved) return JSON.parse(saved);
+  }
+  return fallback;
+};
 
 export default function DynamicResumeSections() {
-  // Each section must have at least one entry
-  const [education, setEducation] = useState([
+  const [education, setEducation] = useState(() => getInitial("education", [
     { school: "", degree: "", start: "", grad: "" }
-  ]);
-  const [experience, setExperience] = useState([
+  ]));
+  const [experience, setExperience] = useState(() => getInitial("experience", [
     { company: "", role: "", start: "", end: "" }
-  ]);
-  const [skills, setSkills] = useState([ "" ]);
+  ]));
+  const [skills, setSkills] = useState(() => getInitial("skills", [""]));
+
+  // Save to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("education", JSON.stringify(education));
+  }, [education]);
+  useEffect(() => {
+    localStorage.setItem("experience", JSON.stringify(experience));
+  }, [experience]);
+  useEffect(() => {
+    localStorage.setItem("skills", JSON.stringify(skills));
+  }, [skills]);
 
   // Education handlers
   const addEducation = () =>
