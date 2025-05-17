@@ -19,6 +19,15 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
           <input type="text" name="last_name" id="last_name" required />
         </label>
         <label>
+          Date of Birth:
+          <input
+            type="date"
+            name="dob"
+            id="dob"
+            required
+            max={new Date().toISOString().split('T')[0]} <!-- Prevents future dates --> 
+        </label>
+        <label>
           Email:
           <input type="email" name="email" id="email" required />
         </label>
@@ -61,6 +70,16 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
             });
           }
         });
+
+        // Persist DOB
+        const dobInput = document.getElementById('dob');
+        if (dobInput) {
+          const saved = localStorage.getItem('dob');
+          if (saved) dobInput.value = saved;
+          dobInput.addEventListener('input', () => {
+            localStorage.setItem('dob', dobInput.value);
+          });
+        }
       });
     </script>
   </main>
