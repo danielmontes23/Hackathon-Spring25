@@ -19,15 +19,6 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
           <input type="text" name="last_name" id="last_name" required />
         </label>
         <label>
-          Date of Birth:
-          <input
-            type="date"
-            name="dob"
-            id="dob"
-            required
-            max={new Date().toISOString().split('T')[0]} <!-- Prevents future dates --> 
-        </label>
-        <label>
           Email:
           <input type="email" name="email" id="email" required />
         </label>
@@ -43,6 +34,12 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
             title="Please enter a valid phone number (numbers only, 10-15 digits)"
           />
         </label>
+      </section>
+
+      <section id="social-links-section">
+        <h2>Social Media Links</h2>
+        <div id="social-links-list"></div>
+        <button type="button" id="add-social-link">Add Social Link</button>
       </section>
 
       <DynamicResumeSections client:load />
@@ -80,6 +77,68 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
             localStorage.setItem('dob', dobInput.value);
           });
         }
+
+        // Social Media Links logic
+        const socialLinksList = document.getElementById('social-links-list');
+        const addSocialBtn = document.getElementById('add-social-link');
+        let socialLinks = JSON.parse(localStorage.getItem('socialLinks') || '[]');
+
+        function renderSocialLinks() {
+          socialLinksList.innerHTML = '';
+          socialLinks.forEach((link, idx) => {
+            const container = document.createElement('div');
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            container.style.gap = '0.5rem';
+            container.style.marginBottom = '0.7rem';
+
+            const platformInput = document.createElement('input');
+            platformInput.type = 'text';
+            platformInput.placeholder = 'Platform (e.g. LinkedIn)';
+            platformInput.value = link.platform || '';
+            platformInput.required = false;
+            platformInput.style.flex = '1';
+            platformInput.addEventListener('input', e => {
+              socialLinks[idx].platform = e.target.value;
+              localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+            });
+
+            const urlInput = document.createElement('input');
+            urlInput.type = 'url';
+            urlInput.placeholder = 'Profile URL';
+            urlInput.value = link.url || '';
+            urlInput.required = false;
+            urlInput.style.flex = '2';
+            urlInput.addEventListener('input', e => {
+              socialLinks[idx].url = e.target.value;
+              localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+            });
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.textContent = 'Delete';
+            removeBtn.style.marginLeft = '0.5rem';
+            removeBtn.addEventListener('click', () => {
+              socialLinks.splice(idx, 1);
+              localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+              renderSocialLinks();
+            });
+
+            container.appendChild(platformInput);
+            container.appendChild(urlInput);
+            container.appendChild(removeBtn);
+
+            socialLinksList.appendChild(container);
+          });
+        }
+
+        addSocialBtn.addEventListener('click', () => {
+          socialLinks.push({ platform: '', url: '' });
+          localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+          renderSocialLinks();
+        });
+
+        renderSocialLinks();
       });
     </script>
   </main>
