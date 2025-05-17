@@ -1,3 +1,7 @@
+html, body, input, textarea, button, select {
+  font-family: Arial, sans-serif;
+}
+
 form {
   display: flex;
   flex-direction: column;
