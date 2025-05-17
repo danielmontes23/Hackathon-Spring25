@@ -125,7 +125,7 @@ export default function DynamicResumeSections() {
               checked={noCollege}
               onChange={e => setNoCollege(e.target.checked)}
             />
-            I did not attend college
+            Non-Applicable
           </label>
           <label>
             College/University Name:
@@ -184,7 +184,7 @@ export default function DynamicResumeSections() {
                     checked={edu.notApplicable || false}
                     onChange={e => handleEducation(idx, "notApplicable", e.target.checked)}
                   />
-                  Not Applicable
+                  Non-Applicable
                 </label>
                 <label>
                   School Name:
