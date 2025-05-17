@@ -6,7 +6,7 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
 
 <Layout>
   <main style="max-width: 700px; margin: 2rem auto;">
-    <h1>Build your Resume</h1>
+    <h1>Resume Builder</h1>
     <form id="resume-form">
       <section>
         <h2>Personal Info</h2>
@@ -28,7 +28,6 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         </label>
       </section>
 
-      <!-- Only this part is React! -->
       <DynamicResumeSections client:load />
 
       <button type="submit">Generate Resume</button>
@@ -36,13 +35,13 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
     <script>
       // Persist personal info fields using localStorage
       document.addEventListener('DOMContentLoaded', () => {
-        const fields = ['first_name', 'last_name', 'email', 'phone'];
-        fields.forEach(field => {
+        ['first_name', 'last_name', 'email', 'phone'].forEach(field => {
           const input = document.getElementById(field);
-          if (input && localStorage.getItem(field)) {
-            input.value = localStorage.getItem(field);
-          }
           if (input) {
+            // Load from localStorage
+            const saved = localStorage.getItem(field);
+            if (saved) input.value = saved;
+            // Save on change
             input.addEventListener('input', () => {
               localStorage.setItem(field, input.value);
             });
