@@ -24,7 +24,15 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         </label>
         <label>
           Phone:
-          <input type="tel" name="phone" id="phone" />
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            inputmode="tel"
+            pattern="^\d{10,15}$"
+            maxlength="15"
+            title="Please enter a valid phone number (numbers only, 10-15 digits)"
+          />
         </label>
       </section>
 
@@ -33,8 +41,14 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
       <button type="submit">Generate Resume</button>
     </form>
     <script>
-      // Persist personal info fields using localStorage
       document.addEventListener('DOMContentLoaded', () => {
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+          phoneInput.addEventListener('input', () => {
+            phoneInput.value = phoneInput.value.replace(/\D/g, '');
+          });
+        }
+
         ['first_name', 'last_name', 'email', 'phone'].forEach(field => {
           const input = document.getElementById(field);
           if (input) {
