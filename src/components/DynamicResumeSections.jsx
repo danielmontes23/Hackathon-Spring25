@@ -175,9 +175,9 @@ export default function DynamicResumeSections() {
         {/* Other Schools */}
         {education.length > 0 && (
           <>
-            <h3>Other Schools</h3>
             {education.map((edu, idx) => (
               <div key={idx} style={{border: "1px solid #eee", padding: "1rem", marginBottom: "1rem", borderRadius: "6px"}}>
+                <h3>Other Schools</h3>
                 <label style={{display: "flex", alignItems: "center", gap: "0.5rem"}}>
                   <input
                     type="checkbox"
