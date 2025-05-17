@@ -18,22 +18,6 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
           Last Name:
           <input type="text" name="last_name" id="last_name" required />
         </label>
-        <label>
-          Email:
-          <input type="email" name="email" id="email" required />
-        </label>
-        <label>
-          Phone:
-          <input
-            type="tel"
-            name="phone"
-            id="phone"
-            inputmode="tel"
-            pattern="^\d{10,15}$"
-            maxlength="15"
-            title="Please enter a valid phone number (numbers only, 10-15 digits)"
-          />
-        </label>
       </section>
 
       <section id="social-links-section">
@@ -279,6 +263,27 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
           renderPhones();
         });
         renderPhones();
+
+        // Form validation for at least one email and phone with label
+        const form = document.getElementById('resume-form');
+        form.addEventListener('submit', (e) => {
+          // Check emails
+          const emails = JSON.parse(localStorage.getItem('emails') || '[]');
+          const validEmails = emails.filter(item => item.email && item.label);
+          if (validEmails.length < 1) {
+            alert('Please add at least one email with a label.');
+            e.preventDefault();
+            return;
+          }
+          // Check phones
+          const phones = JSON.parse(localStorage.getItem('phones') || '[]');
+          const validPhones = phones.filter(item => item.phone && item.label);
+          if (validPhones.length < 1) {
+            alert('Please add at least one phone number with a label.');
+            e.preventDefault();
+            return;
+          }
+        });
       });
     </script>
   </main>
