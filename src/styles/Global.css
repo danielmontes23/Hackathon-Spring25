@@ -153,3 +153,22 @@ body.theme-green {
   --button-text: #fff;
   background: #f0f9f4 !important;
 }
+
+html.theme-dark input,
+body.theme-dark input,
+html.theme-dark textarea,
+body.theme-dark textarea {
+  background: #2d3748;
+  color: #f6f7f9;
+  border-color: #3b4a5a;
+}
+
+html.theme-dark input:focus,
+body.theme-dark input:focus,
+html.theme-dark textarea:focus,
+body.theme-dark textarea:focus {
+  background: #23272f;
+  color: #fff;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px #1e293b;
+}
