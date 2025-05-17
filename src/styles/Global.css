@@ -1,7 +1,18 @@
+:root {
+  --bg: #f6f7f9;
+  --section-bg: #fcfcfd;
+  --border: #e3e6ea;
+  --text: #23272f;
+  --accent: #2563eb;
+  --button-bg: linear-gradient(90deg, #7b93b6 60%, #b6c3d1 100%);
+  --button-hover: linear-gradient(90deg, #5a6d89 60%, #7b93b6 100%);
+  --button-text: #23272f;
+}
+
 html, body, input, textarea, button, select {
   font-family: Arial, sans-serif;
-  color: #23272f;
-  background: #f6f7f9;
+  color: var(--text);
+  background: var(--bg);
 }
 
 form {
@@ -11,8 +22,8 @@ form {
 }
 
 form section {
-  background: #fcfcfd;
-  border: 1px solid #e3e6ea;
+  background: var(--section-bg);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 2rem 1.5rem;
   box-shadow: 0 2px 16px rgba(60,72,88,0.07);
@@ -28,7 +39,7 @@ form section h2 {
   margin-top: 0;
   margin-bottom: 1.2rem;
   font-size: 1.35rem;
-  color: #3b4a5a;
+  color: var(--accent);
   letter-spacing: 0.02em;
   font-weight: 700;
 }
@@ -39,7 +50,7 @@ form label {
   margin-bottom: 1.1rem;
   font-weight: 500;
   gap: 0.3rem;
-  color: #3b4a5a;
+  color: var(--accent);
 }
 
 form input, form textarea {
@@ -49,7 +60,7 @@ form input, form textarea {
   font-size: 1rem;
   margin-top: 0.2rem;
   background: #f8fafb;
-  color: #23272f;
+  color: var(--text);
   transition: border 0.2s, box-shadow 0.2s;
   box-shadow: 0 1px 2px rgba(60,72,88,0.03);
 }
@@ -69,8 +80,8 @@ form textarea {
 button[type="submit"], button[type="button"] {
   margin-top: 1rem;
   padding: 0.8rem 1.7rem;
-  background: linear-gradient(90deg, #7b93b6 60%, #b6c3d1 100%);
-  color: #23272f;
+  background: var(--button-bg);
+  color: var(--button-text);
   border: none;
   border-radius: 7px;
   font-size: 1.1rem;
@@ -81,7 +92,7 @@ button[type="submit"], button[type="button"] {
 }
 
 button[type="submit"]:hover, button[type="button"]:hover {
-  background: linear-gradient(90deg, #5a6d89 60%, #7b93b6 100%);
+  background: var(--button-hover);
   color: #fff;
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 4px 16px rgba(123,147,182,0.13);
@@ -98,3 +109,34 @@ button:disabled {
 ::-moz-placeholder { color: #a0aec0; }
 :-ms-input-placeholder { color: #a0aec0; }
 ::placeholder { color: #a0aec0; }
+
+body.theme-dark {
+  --bg: #23272f;
+  --section-bg: #2d3748;
+  --border: #3b4a5a;
+  --text: #f6f7f9;
+  --accent: #90cdf4;
+  --button-bg: linear-gradient(90deg, #4a5568 60%, #2d3748 100%);
+  --button-hover: linear-gradient(90deg, #2d3748 60%, #4a5568 100%);
+  --button-text: #f6f7f9;
+}
+body.theme-blue {
+  --bg: #eaf4fb;
+  --section-bg: #f7fbfd;
+  --border: #b6c3d1;
+  --text: #1a365d;
+  --accent: #2563eb;
+  --button-bg: linear-gradient(90deg, #2563eb 60%, #4f8cff 100%);
+  --button-hover: linear-gradient(90deg, #1741b6 60%, #2563eb 100%);
+  --button-text: #fff;
+}
+body.theme-green {
+  --bg: #f0f9f4;
+  --section-bg: #f7fcfa;
+  --border: #b7e4c7;
+  --text: #22543d;
+  --accent: #38a169;
+  --button-bg: linear-gradient(90deg, #38a169 60%, #68d391 100%);
+  --button-hover: linear-gradient(90deg, #22543d 60%, #38a169 100%);
+  --button-text: #fff;
+}
