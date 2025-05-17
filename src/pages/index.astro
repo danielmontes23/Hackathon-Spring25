@@ -297,14 +297,24 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         // Theme switcher
         const themeSelect = document.getElementById('theme-select');
         const savedTheme = localStorage.getItem('theme') || 'default';
-        document.body.classList.remove('theme-dark', 'theme-blue', 'theme-green');
-        if (savedTheme !== 'default') document.body.classList.add('theme-' + savedTheme);
+        ['theme-dark', 'theme-blue', 'theme-green'].forEach(cls => {
+          document.body.classList.remove(cls);
+          document.documentElement.classList.remove(cls);
+        });
+        if (savedTheme !== 'default') {
+          document.body.classList.add('theme-' + savedTheme);
+          document.documentElement.classList.add('theme-' + savedTheme);
+        }
         themeSelect.value = savedTheme;
 
         themeSelect.addEventListener('change', (e) => {
-          document.body.classList.remove('theme-dark', 'theme-blue', 'theme-green');
+          ['theme-dark', 'theme-blue', 'theme-green'].forEach(cls => {
+            document.body.classList.remove(cls);
+            document.documentElement.classList.remove(cls);
+          });
           if (e.target.value !== 'default') {
             document.body.classList.add('theme-' + e.target.value);
+            document.documentElement.classList.add('theme-' + e.target.value);
           }
           localStorage.setItem('theme', e.target.value);
         });

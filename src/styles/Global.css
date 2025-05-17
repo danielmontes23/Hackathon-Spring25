@@ -9,6 +9,11 @@
   --button-text: #23272f;
 }
 
+html, body {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
 html, body, input, textarea, button, select {
   font-family: Arial, sans-serif;
   color: var(--text);
@@ -50,7 +55,7 @@ form label {
   margin-bottom: 1.1rem;
   font-weight: 500;
   gap: 0.3rem;
-  color: var(--accent);
+  color: var(--text);
 }
 
 form input, form textarea {
@@ -110,16 +115,20 @@ button:disabled {
 :-ms-input-placeholder { color: #a0aec0; }
 ::placeholder { color: #a0aec0; }
 
+html.theme-dark,
 body.theme-dark {
   --bg: #23272f;
   --section-bg: #2d3748;
   --border: #3b4a5a;
-  --text: #f6f7f9;
-  --accent: #90cdf4;
-  --button-bg: linear-gradient(90deg, #4a5568 60%, #2d3748 100%);
-  --button-hover: linear-gradient(90deg, #2d3748 60%, #4a5568 100%);
+  --text: #e3e6ea;         /* Softer, more readable off-white */
+  --accent: #60a5fa;       /* Softer blue accent */
+  --button-bg: linear-gradient(90deg, #3b4252 60%, #2563eb 100%);
+  --button-hover: linear-gradient(90deg, #2563eb 60%, #3b4252 100%);
   --button-text: #f6f7f9;
+  background: #23272f !important;
 }
+
+html.theme-blue,
 body.theme-blue {
   --bg: #eaf4fb;
   --section-bg: #f7fbfd;
@@ -129,7 +138,10 @@ body.theme-blue {
   --button-bg: linear-gradient(90deg, #2563eb 60%, #4f8cff 100%);
   --button-hover: linear-gradient(90deg, #1741b6 60%, #2563eb 100%);
   --button-text: #fff;
+  background: #eaf4fb !important;
 }
+
+html.theme-green,
 body.theme-green {
   --bg: #f0f9f4;
   --section-bg: #f7fcfa;
@@ -139,4 +151,5 @@ body.theme-green {
   --button-bg: linear-gradient(90deg, #38a169 60%, #68d391 100%);
   --button-hover: linear-gradient(90deg, #22543d 60%, #38a169 100%);
   --button-text: #fff;
+  background: #f0f9f4 !important;
 }
