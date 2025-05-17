@@ -12,19 +12,19 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         <h2>Personal Info</h2>
         <label>
           First Name:
-          <input type="text" name="first_name" required />
+          <input type="text" name="first_name" id="first_name" required />
         </label>
         <label>
           Last Name:
-          <input type="text" name="last_name" required />
+          <input type="text" name="last_name" id="last_name" required />
         </label>
         <label>
           Email:
-          <input type="email" name="email" required />
+          <input type="email" name="email" id="email" required />
         </label>
         <label>
           Phone:
-          <input type="tel" name="phone" />
+          <input type="tel" name="phone" id="phone" />
         </label>
       </section>
 
@@ -33,5 +33,22 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
 
       <button type="submit">Generate Resume</button>
     </form>
+    <script>
+      // Persist personal info fields using localStorage
+      document.addEventListener('DOMContentLoaded', () => {
+        const fields = ['first_name', 'last_name', 'email', 'phone'];
+        fields.forEach(field => {
+          const input = document.getElementById(field);
+          if (input && localStorage.getItem(field)) {
+            input.value = localStorage.getItem(field);
+          }
+          if (input) {
+            input.addEventListener('input', () => {
+              localStorage.setItem(field, input.value);
+            });
+          }
+        });
+      });
+    </script>
   </main>
 </Layout>
