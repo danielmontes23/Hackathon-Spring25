@@ -42,6 +42,17 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         <button type="button" id="add-social-link">Add Social Link</button>
       </section>
 
+      <section id="emails-section">
+        <h2>Emails</h2>
+        <div id="emails-list"></div>
+        <button type="button" id="add-email">Add Email</button>
+      </section>
+      <section id="phones-section">
+        <h2>Phone Numbers</h2>
+        <div id="phones-list"></div>
+        <button type="button" id="add-phone">Add Phone Number</button>
+      </section>
+
       <DynamicResumeSections client:load />
 
       <button type="submit">Generate Resume</button>
@@ -139,6 +150,135 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         });
 
         renderSocialLinks();
+
+        // Emails logic
+        const emailsList = document.getElementById('emails-list');
+        const addEmailBtn = document.getElementById('add-email');
+        let emails = JSON.parse(localStorage.getItem('emails') || '[]');
+
+        function renderEmails() {
+          emailsList.innerHTML = '';
+          emails.forEach((item, idx) => {
+            const container = document.createElement('div');
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            container.style.gap = '0.5rem';
+            container.style.marginBottom = '0.7rem';
+
+            const labelSelect = document.createElement('select');
+            ['Personal', 'Work', 'Home'].forEach(option => {
+              const opt = document.createElement('option');
+              opt.value = option;
+              opt.textContent = option;
+              if (item.label === option) opt.selected = true;
+              labelSelect.appendChild(opt);
+            });
+            labelSelect.addEventListener('change', e => {
+              emails[idx].label = e.target.value;
+              localStorage.setItem('emails', JSON.stringify(emails));
+            });
+
+            const emailInput = document.createElement('input');
+            emailInput.type = 'email';
+            emailInput.placeholder = 'Email address';
+            emailInput.value = item.email || '';
+            emailInput.required = false;
+            emailInput.style.flex = '2';
+            emailInput.addEventListener('input', e => {
+              emails[idx].email = e.target.value;
+              localStorage.setItem('emails', JSON.stringify(emails));
+            });
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.textContent = 'Delete';
+            removeBtn.addEventListener('click', () => {
+              emails.splice(idx, 1);
+              localStorage.setItem('emails', JSON.stringify(emails));
+              renderEmails();
+            });
+
+            container.appendChild(labelSelect);
+            container.appendChild(emailInput);
+            container.appendChild(removeBtn);
+
+            emailsList.appendChild(container);
+          });
+        }
+
+        addEmailBtn.addEventListener('click', () => {
+          emails.push({ label: 'Personal', email: '' });
+          localStorage.setItem('emails', JSON.stringify(emails));
+          renderEmails();
+        });
+        renderEmails();
+
+        // Phones logic
+        const phonesList = document.getElementById('phones-list');
+        const addPhoneBtn = document.getElementById('add-phone');
+        let phones = JSON.parse(localStorage.getItem('phones') || '[]');
+
+        function renderPhones() {
+          phonesList.innerHTML = '';
+          phones.forEach((item, idx) => {
+            const container = document.createElement('div');
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            container.style.gap = '0.5rem';
+            container.style.marginBottom = '0.7rem';
+
+            const labelSelect = document.createElement('select');
+            ['Personal', 'Work', 'Home'].forEach(option => {
+              const opt = document.createElement('option');
+              opt.value = option;
+              opt.textContent = option;
+              if (item.label === option) opt.selected = true;
+              labelSelect.appendChild(opt);
+            });
+            labelSelect.addEventListener('change', e => {
+              phones[idx].label = e.target.value;
+              localStorage.setItem('phones', JSON.stringify(phones));
+            });
+
+            const phoneInput = document.createElement('input');
+            phoneInput.type = 'tel';
+            phoneInput.placeholder = 'Phone number';
+            phoneInput.value = item.phone || '';
+            phoneInput.required = false;
+            phoneInput.pattern = '^\\d{10,15}$';
+            phoneInput.maxLength = 15;
+            phoneInput.inputMode = 'tel';
+            phoneInput.style.flex = '2';
+            phoneInput.title = "Please enter a valid phone number (numbers only, 10-15 digits)";
+            phoneInput.addEventListener('input', e => {
+              phoneInput.value = phoneInput.value.replace(/\D/g, '');
+              phones[idx].phone = phoneInput.value;
+              localStorage.setItem('phones', JSON.stringify(phones));
+            });
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.textContent = 'Delete';
+            removeBtn.addEventListener('click', () => {
+              phones.splice(idx, 1);
+              localStorage.setItem('phones', JSON.stringify(phones));
+              renderPhones();
+            });
+
+            container.appendChild(labelSelect);
+            container.appendChild(phoneInput);
+            container.appendChild(removeBtn);
+
+            phonesList.appendChild(container);
+          });
+        }
+
+        addPhoneBtn.addEventListener('click', () => {
+          phones.push({ label: 'Personal', phone: '' });
+          localStorage.setItem('phones', JSON.stringify(phones));
+          renderPhones();
+        });
+        renderPhones();
       });
     </script>
   </main>
