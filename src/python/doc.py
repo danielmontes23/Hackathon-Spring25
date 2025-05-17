@@ -136,7 +136,8 @@ class document_creation():
         
         :param data: A dictionary containing six key-value pairs. The keys are 'dates', 'title', 'company', 'city', 'country', and 'data'.
 
-        :return: A dictionary indicating whether the section was added successfully.'''
+        :return: A dictionary indicating whether the section was added successfully.
+        '''
         with self.doc.create(Section(section)):
             for entry in data.values():
                 self.doc.append(Command('cventry', arguments=[

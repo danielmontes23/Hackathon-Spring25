@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from flask import Flask, jsonify, send_from_directory
 import doc
 from pylatex import *
@@ -49,18 +50,20 @@ def add_section(args):
         else:
             valid = texfile.add_section_2(argsd['section'], argsd['section_data'])
 
+    return jsonify(valid), 200
+
 @app.route('/section_add6/<args>', methods=['GET'])
 def add_section6(args):
     argsd = ast.literal_eval(base64.b64decode(args).decode("utf-8"))
     valid = texfile.add_section_6(argsd['section'], argsd['section_data'])
-    return valid   
+    return jsonify(valid), 200
 
 @app.route('/generate', methods=['GET'])
 def generate():
     valid = texfile.generate(file_name)
     if not valid:
         valid = {'isvalid': False}
-    return jsonify(valid)
+    return jsonify(valid), 200
 
 @app.route('/download', methods=['GET'])
 def download_file():
