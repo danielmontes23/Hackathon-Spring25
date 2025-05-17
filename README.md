@@ -7,6 +7,7 @@
 
 - Real-Time PDF Rendering: Instantly preview and export industry-standard resumes.
 
+- Ability to change template colors.
 
 # Astro Starter Kit: Basics
 
