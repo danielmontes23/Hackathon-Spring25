@@ -1,11 +1,85 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { useState } from 'react';
 ---
 
 <Layout>
-	<Welcome />
+  <main style="max-width: 700px; margin: 2rem auto;">
+    <h1>Build Your Resume</h1>
+    <form id="resume-form">
+      <section>
+        <h2>Personal Info</h2>
+        <label>
+          Name:
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Email:
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Phone:
+          <input type="tel" name="phone" />
+        </label>
+      </section>
+
+      <section>
+        <h2>Education</h2>
+        <div>
+          <label>
+            School:
+            <input type="text" name="education_school" />
+          </label>
+          <label>
+            Degree:
+            <input type="text" name="education_degree" />
+          </label>
+          <label>
+            Year:
+            <input type="text" name="education_year" />
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+        <div>
+          <label>
+            Company:
+            <input type="text" name="experience_company" />
+          </label>
+          <label>
+            Role:
+            <input type="text" name="experience_role" />
+          </label>
+          <label>
+            Years:
+            <input type="text" name="experience_years" />
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <label>
+          List your skills (comma separated):
+          <input type="text" name="skills" />
+        </label>
+      </section>
+
+      <section>
+        <h2>Custom Section</h2>
+        <label>
+          Section Label:
+          <input type="text" name="custom_label" />
+        </label>
+        <label>
+          Section Content:
+          <textarea name="custom_content"></textarea>
+        </label>
+      </section>
+
+      <button type="submit">Generate Resume</button>
+    </form>
+  </main>
 </Layout>
