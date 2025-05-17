@@ -37,7 +37,7 @@ export default function DynamicResumeSections() {
 
   // Handlers for dynamic education
   const addEducation = () =>
-    setEducation([...education, { school: "", degree: "", grad: "" }]);
+    setEducation([...education, { school: "", degree: "", grad: "", notApplicable: false }]);
   const removeEducation = idx =>
     education.length > 1 && setEducation(education.filter((_, i) => i !== idx));
   const handleEducation = (idx, field, value) => {
@@ -178,6 +178,14 @@ export default function DynamicResumeSections() {
             <h3>Other Schools</h3>
             {education.map((edu, idx) => (
               <div key={idx} style={{border: "1px solid #eee", padding: "1rem", marginBottom: "1rem", borderRadius: "6px"}}>
+                <label style={{display: "flex", alignItems: "center", gap: "0.5rem"}}>
+                  <input
+                    type="checkbox"
+                    checked={edu.notApplicable || false}
+                    onChange={e => handleEducation(idx, "notApplicable", e.target.checked)}
+                  />
+                  Not Applicable
+                </label>
                 <label>
                   School Name:
                   <input
@@ -186,6 +194,7 @@ export default function DynamicResumeSections() {
                     value={edu.school}
                     onChange={e => handleEducation(idx, "school", e.target.value)}
                     required
+                    disabled={edu.notApplicable}
                   />
                 </label>
                 <label>
@@ -196,6 +205,7 @@ export default function DynamicResumeSections() {
                     value={edu.degree}
                     onChange={e => handleEducation(idx, "degree", e.target.value)}
                     required
+                    disabled={edu.notApplicable}
                   />
                 </label>
                 <label>
@@ -206,6 +216,7 @@ export default function DynamicResumeSections() {
                     value={edu.grad}
                     onChange={e => handleEducation(idx, "grad", e.target.value)}
                     required
+                    disabled={edu.notApplicable}
                   />
                 </label>
                 <button type="button" onClick={() => removeEducation(idx)} disabled={education.length === 1}>Delete</button>
