@@ -3,6 +3,9 @@ from pylatex.utils import bold
 import os
 import subprocess
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
+
 class document_creation():
     def __init__(self):
         '''
@@ -124,6 +127,7 @@ class document_creation():
             with self.doc.create(Section(section)):
                 for key in section_data.keys():
                     self.doc.append(Command('cvitem', arguments=[key, NoEscape(section_data[key])]))
+
                 return {'isvalid': True}
         return {'isvalid': False}
             
@@ -157,15 +161,14 @@ class document_creation():
         
         :param name: The name of the output file (without extension).'''
         # Ensure output directory exists
-        os.makedirs('output', exist_ok=True)
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
         try:
-            # Generate PDF using pdflatex
-            self.doc.generate_pdf(f'output/{name}', clean_tex=False, compiler='pdflatex')
+            self.doc.generate_pdf(os.path.join(OUTPUT_DIR, name), clean_tex=False, compiler='pdflatex')
             return {'isvalid': True}
         except subprocess.CalledProcessError as e:
             print(f"LaTeX compilation failed with exit code {e.returncode}")
             print(f"Output: {e.output.decode()}")
-            log_file_path = f'output/{name}.log'
+            log_file_path = f'./src/python/output/{name}.log'
             if os.path.exists(log_file_path):
                 with open(log_file_path, 'r') as log_file:
                     print("Log file contents:")

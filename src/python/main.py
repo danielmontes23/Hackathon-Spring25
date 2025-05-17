@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, after_this_request
 import doc
 from pylatex import *
 import ast
 import base64
+import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 
 texfile = doc.document_creation()
 file_name =""
@@ -67,7 +70,21 @@ def generate():
 
 @app.route('/download', methods=['GET'])
 def download_file():
-    return send_from_directory('output', file_name, as_attachment=True)
+    filename = f"{file_name}.pdf"
+    tex_filename = f"{file_name}.tex"
+
+    @after_this_request
+    def cleanup(response):
+        try:
+            tex_path = os.path.join(OUTPUT_DIR, tex_filename)
+            if os.path.exists(tex_path):
+                os.remove(tex_path)
+                print(f"Removed: {tex_path}")
+        except Exception as e:
+            print(f"Failed to remove .tex file: {e}")
+        return response
+
+    return send_from_directory(OUTPUT_DIR, filename, as_attachment=True)
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000)
+    app.run(host="127.0.0.1", port=4444, debug=True)
