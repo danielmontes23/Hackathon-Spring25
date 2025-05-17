@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 import doc
 from pylatex import *
 import ast
@@ -10,6 +11,8 @@ file_name =""
 
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  # This will enable CORS for all routes
+
 @app.route('/setcolor/<color>', methods=['GET'])
 def set_color(color):
     valid = texfile.set_color(base64.b64decode(color).decode("utf-8"))
@@ -39,10 +42,14 @@ def set_personals(socials):
     valid = texfile.personal_info(sd['fname'],sd['lname'],sd['title'],sd['faddress'],sd['laddress'],email,phone,social,homepage)
     return jsonify(valid), 200
 
-@app.route('/generate', methods=['GET'])
+@app.route('/generate', methods=['POST'])
 def generate():
-    texfile.generate("test_name")
-    return jsonify({'isvalid': True})
+    # Check if color, style, and personal info are set
+    if not texfile.color or not texfile.style or not texfile.personal_info_set:
+        return jsonify({'success': False, 'message': 'Color, style, and personal info must be set first.'}), 400
+    data = request.get_json()
+    # texfile.generate_resume(data)
+    return jsonify({'success': True, 'message': 'Resume generated!'})
 
 @app.route('/download', methods=['GET'])
 def download_file():
