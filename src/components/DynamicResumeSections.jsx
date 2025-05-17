@@ -98,6 +98,16 @@ export default function DynamicResumeSections() {
             />
           </label>
           <label>
+            Start Year:
+            <input
+              type="text"
+              name="high_school_start"
+              value={highSchool.start || ""}
+              onChange={e => setHighSchool({ ...highSchool, start: e.target.value })}
+              required
+            />
+          </label>
+          <label>
             Graduation Year:
             <input
               type="text"
@@ -131,12 +141,12 @@ export default function DynamicResumeSections() {
             />
           </label>
           <label>
-            Degree:
+            Start Year:
             <input
               type="text"
-              name="college_degree"
-              value={college.degree}
-              onChange={e => setCollege({ ...college, degree: e.target.value })}
+              name="college_start"
+              value={college.start || ""}
+              onChange={e => setCollege({ ...college, start: e.target.value })}
               disabled={noCollege}
               required={!noCollege}
             />
@@ -148,6 +158,17 @@ export default function DynamicResumeSections() {
               name="college_grad"
               value={college.grad}
               onChange={e => setCollege({ ...college, grad: e.target.value })}
+              disabled={noCollege}
+              required={!noCollege}
+            />
+          </label>
+          <label>
+            Degree:
+            <input
+              type="text"
+              name="college_degree"
+              value={college.degree}
+              onChange={e => setCollege({ ...college, degree: e.target.value })}
               disabled={noCollege}
               required={!noCollege}
             />
