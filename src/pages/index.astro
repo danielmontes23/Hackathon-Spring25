@@ -31,18 +31,6 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
       <!-- Only this part is React! -->
       <DynamicResumeSections client:load />
 
-      <section>
-        <h2>Custom Section</h2>
-        <label>
-          Section Label:
-          <input type="text" name="custom_label" />
-        </label>
-        <label>
-          Section Content:
-          <textarea name="custom_content"></textarea>
-        </label>
-      </section>
-
       <button type="submit">Generate Resume</button>
     </form>
   </main>
