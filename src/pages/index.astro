@@ -46,7 +46,7 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
         <button type="button" id="add-phone">Add Phone Number</button>
       </section>
 
-      <DynamicResumeSections client:load />
+      <DynamicResumeSections client:only="react" />
       <button type="submit">Generate Resume</button>
     </form>
     <script>
@@ -304,6 +304,61 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
             document.documentElement.classList.add('theme-' + e.target.value);
           }
           localStorage.setItem('theme', e.target.value);
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('resume-form');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          // Gather data as before...
+          const data = {
+            first_name: document.getElementById('first_name').value,
+            last_name: document.getElementById('last_name').value,
+            socialLinks: JSON.parse(localStorage.getItem('socialLinks') || '[]'),
+            emails: JSON.parse(localStorage.getItem('emails') || '[]'),
+            phones: JSON.parse(localStorage.getItem('phones') || '[]'),
+            // Gather dynamic sections from localStorage (set by DynamicResumeSections.jsx)
+            highSchool: JSON.parse(localStorage.getItem('highSchool') || '{}'),
+            college: JSON.parse(localStorage.getItem('college') || '{}'),
+            noCollege: JSON.parse(localStorage.getItem('noCollege') || 'false'),
+            education: JSON.parse(localStorage.getItem('education') || '[]'),
+            experience: JSON.parse(localStorage.getItem('experience') || '[]'),
+            skills: JSON.parse(localStorage.getItem('skills') || '[]'),
+            customSections: JSON.parse(localStorage.getItem('customSections') || '[]'),
+            color: localStorage.getItem('color') || 'default',
+            style: localStorage.getItem('style') || 'default',
+          };
+
+          // 1. Set color
+          await fetch(`http://localhost:5000/setcolor/${btoa(data.color)}`);
+
+          // 2. Set style
+          await fetch(`http://localhost:5000/setstyle/${btoa(data.style)}`);
+
+          // 3. Set personal info
+          const personals = {
+            fname: data.first_name,
+            lname: data.last_name,
+            // ...add other personal fields as needed...
+          };
+          await fetch(`http://localhost:5000/setpersonals/${btoa(JSON.stringify(personals))}`);
+
+          // 4. Generate PDF
+          const response = await fetch('http://localhost:5000/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            alert('Resume generated! Download link coming soon.');
+            // Optionally, handle download here
+          } else {
+            alert('Failed to generate resume.');
+          }
         });
       });
     </script>
