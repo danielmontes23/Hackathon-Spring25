@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from flask import Flask, jsonify, send_from_directory, after_this_request
+from flask_cors import CORS
 import doc
 from pylatex import *
 import ast
@@ -14,6 +15,8 @@ file_name = ""
 
 
 app = Flask(__name__)
+CORS(app)
+
 @app.route('/setcolor/<color>', methods=['GET'])
 def set_color(color):
     valid = texfile.set_color(base64.b64decode(color).decode("utf-8"))
@@ -32,6 +35,10 @@ def set_personals(socials):
     file_name = f"{sd['lname']}_{sd['fname']}_resume"
 
     phone = social = email = homepage = None
+    if 'faddress' in sd.keys():
+        faddress = sd['faddress']
+    if 'laddress' in sd.keys():
+        laddress = sd['laddress']
     if 'email' in sd.keys():
         email = sd['email']
     if 'phone' in sd.keys():
@@ -40,7 +47,7 @@ def set_personals(socials):
         social = sd['social']
     if 'homepage' in sd.keys():
         homepage = sd['homepage']
-    valid = texfile.personal_info(sd['fname'],sd['lname'],sd['title'],sd['faddress'],sd['laddress'],email,phone,social,homepage)
+    valid = texfile.personal_info(sd['fname'],sd['lname'],sd['title'],faddress,laddress,email,phone,social,homepage)
     return jsonify(valid), 200
 
 @app.route('/section_add2/<args>', methods=['GET'])

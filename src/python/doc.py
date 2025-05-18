@@ -46,7 +46,7 @@ class document_creation():
             return {'isvalid': True}
         return {'isvalid': False}
 
-    def personal_info(self, fname: str, lname: str, title: str, faddress: str, laddress: str,
+    def personal_info(self, fname: str, lname: str, title: str, faddress: str | None = None, laddress: str | None = None,
                      email: dict | None = None, phone: dict | None = None,
                      social: dict | None = None, homepage: str | None = None) -> dict:
         '''
@@ -75,7 +75,8 @@ class document_creation():
 
         self.doc.preamble.append(Command('name', [fname, lname]))
         self.doc.preamble.append(Command('title', title))
-        self.doc.preamble.append(Command('address', [faddress, laddress]))
+        if faddress and laddress:
+            self.doc.preamble.append(Command('address', [faddress, laddress]))
         if phone:
             for key, value in phone.items():
                 self.doc.preamble.append(Command('phone', arguments=value, options=key))
