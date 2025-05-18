@@ -27,6 +27,18 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
           Last Name:
           <input type="text" name="last_name" id="last_name" required />
         </label>
+        <label>
+          Title:
+          <input type="text" name="title" id="title" required />
+        </label>
+        <label>
+          First Address Line:
+          <input type="text" name="faddress" id="faddress" required />
+        </label>
+        <label>
+          Last Address Line:
+          <input type="text" name="laddress" id="laddress" required />
+        </label>
       </section>
 
       <section id="social-links-section">
@@ -308,19 +320,22 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
       });
     </script>
     <script>
+      // Unicode-safe base64 encoding
+      function b64EncodeUnicode(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('resume-form');
         form.addEventListener('submit', async (e) => {
           e.preventDefault();
 
-          // Gather data as before...
           const data = {
             first_name: document.getElementById('first_name').value,
             last_name: document.getElementById('last_name').value,
             socialLinks: JSON.parse(localStorage.getItem('socialLinks') || '[]'),
             emails: JSON.parse(localStorage.getItem('emails') || '[]'),
             phones: JSON.parse(localStorage.getItem('phones') || '[]'),
-            // Gather dynamic sections from localStorage (set by DynamicResumeSections.jsx)
             highSchool: JSON.parse(localStorage.getItem('highSchool') || '{}'),
             college: JSON.parse(localStorage.getItem('college') || '{}'),
             noCollege: JSON.parse(localStorage.getItem('noCollege') || 'false'),
@@ -328,34 +343,41 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
             experience: JSON.parse(localStorage.getItem('experience') || '[]'),
             skills: JSON.parse(localStorage.getItem('skills') || '[]'),
             customSections: JSON.parse(localStorage.getItem('customSections') || '[]'),
-            color: localStorage.getItem('color') || 'default',
-            style: localStorage.getItem('style') || 'default',
+            color: localStorage.getItem('color') || 'blue',
+            style: localStorage.getItem('style') || 'classic',
           };
 
-          // 1. Set color
-          await fetch(`http://localhost:5000/setcolor/${btoa(data.color)}`);
+          // 1. Set color (GET)
+          await fetch(`http://localhost:5000/setcolor/${b64EncodeUnicode(data.color)}`);
 
-          // 2. Set style
-          await fetch(`http://localhost:5000/setstyle/${btoa(data.style)}`);
+          // 2. Set style (GET)
+          await fetch(`http://localhost:5000/setstyle/${b64EncodeUnicode(data.style)}`);
 
-          // 3. Set personal info
+          // 3. Set personal info (GET)
           const personals = {
             fname: data.first_name,
             lname: data.last_name,
-            // ...add other personal fields as needed...
+            title: document.getElementById('title')?.value || '',
+            faddress: document.getElementById('faddress')?.value || '',
+            laddress: document.getElementById('laddress')?.value || ''
           };
-          await fetch(`http://localhost:5000/setpersonals/${btoa(JSON.stringify(personals))}`);
+          await fetch(`http://localhost:5000/setpersonals/${b64EncodeUnicode(JSON.stringify(personals))}`);
 
-          // 4. Generate PDF
-          const response = await fetch('http://localhost:5000/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
+          // 4. Add sections (GET) - education and experience
+          for (const edu of data.education) {
+            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode('Education')}/${b64EncodeUnicode(JSON.stringify(edu))}`);
+          }
+          for (const exp of data.experience) {
+            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode('Experience')}/${b64EncodeUnicode(JSON.stringify(exp))}`);
+          }
+          // Add similar loops for skills, customSections, etc. if needed
+
+          // 5. Generate PDF (GET)
+          const response = await fetch('http://localhost:5000/generate');
 
           if (response.ok) {
             alert('Resume generated! Download link coming soon.');
-            // Optionally, handle download here
+            window.location.href = 'http://localhost:5000/download';
           } else {
             alert('Failed to generate resume.');
           }
