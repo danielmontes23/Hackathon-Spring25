@@ -365,12 +365,23 @@ import DynamicResumeSections from '../components/DynamicResumeSections.jsx';
 
           // 4. Add sections (GET) - education and experience
           for (const edu of data.education) {
-            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode('Education')}/${b64EncodeUnicode(JSON.stringify(edu))}`);
+            const sectionObj = { section: 'Education', section_data: edu };
+            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode(JSON.stringify(sectionObj))}`);
           }
           for (const exp of data.experience) {
-            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode('Experience')}/${b64EncodeUnicode(JSON.stringify(exp))}`);
+            const sectionObj = { section: 'Experience', section_data: exp };
+            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode(JSON.stringify(sectionObj))}`);
           }
-          // Add similar loops for skills, customSections, etc. if needed
+          // Add skills as a section
+          if (data.skills && data.skills.length > 0) {
+            const sectionObj = { section: 'Skills', section_data: data.skills };
+            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode(JSON.stringify(sectionObj))}`);
+          }
+          // Add custom sections
+          for (const custom of data.customSections) {
+            const sectionObj = { section: custom.label, section_data: custom.content };
+            await fetch(`http://localhost:5000/section_add2/${b64EncodeUnicode(JSON.stringify(sectionObj))}`);
+          }
 
           // 5. Generate PDF (GET)
           const response = await fetch('http://localhost:5000/generate');
